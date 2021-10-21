@@ -19,9 +19,7 @@ pipeline {
             ]]
         )
     }
- tools{
- maven 'Maven 3.8.3'
- }
+ 
  stages{
  stage("build"){
  when{
@@ -46,11 +44,6 @@ pipeline {
  }
  }
  }
- post{
- always{
- echo 'Building multibranch pipeline for worker is completed..'
- }
- }
 }
-}
+ }
 
