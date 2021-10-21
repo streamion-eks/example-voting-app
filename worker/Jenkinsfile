@@ -3,6 +3,14 @@ pipeline {
  options {
         office365ConnectorWebhooks([[
                     startNotification: true,
+                    notifySuccess: true,
+                    notifyAborted: false,
+                    notifyNotBuilt: false,
+                    notifyUnstable: true,
+                    notifyFailure: true,
+                    notifyBackToNormal: true,
+                    notifyRepeatedFailure: false,
+                    office365ConnectorSend message:"started ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)",
                         url: 'https://11nines.webhook.office.com/webhookb2/e045c75e-0e4c-4b05-b073-3bfb3e4f88ae@a87b69a0-ce96-4a81-8947-521115c7a48c/JenkinsCI/baf4c797214e49bcbc4f094e574d6b04/3c347902-8b08-4832-ab1c-85a21b4b47fb'
             ]]
         )
@@ -43,6 +51,9 @@ pipeline {
  dir('worker'){
  sh 'mvn package -DskipTests'
  archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+ office365ConnectorSend webhookUrl: 'https://11nines.webhook.office.com/webhookb2/e045c75e-0e4c-4b05-b073-3bfb3e4f88ae@a87b69a0-ce96-4a81-8947-521115c7a48c/JenkinsCI/baf4c797214e49bcbc4f094e574d6b04/3c347902-8b08-4832-ab1c-85a21b4b47fb',
+                    message: 'Application has been [deployed](https://uat.green.biz)',
+                    status: 'Success'
  }
  }
  }
